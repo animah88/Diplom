@@ -25,6 +25,12 @@
         <p>Функція:
             <input type="text" id="func" value="x^2">
         </p>
+        <p>
+            <select name="combo_box" id="type">
+            <option value="polynom">polynomial</option>
+            <option value="exponent">exponential</option>
+            </select>
+        </p>
         <button id="go">GO</button>
         <div id="iterations"> </div>
         <div id="plot"></div>
@@ -62,18 +68,21 @@
                     `
                 })
                 iterations.innerHTML = formulas.join('')
-                // let formula = document.getElementById('formula1')
-                // console.log(formula)
+                    // let formula = document.getElementById('formula1')
+                    // console.log(formula)
                 MathJax.Hub.Queue(["Typeset", MathJax.Hub, iterations])
-                
- 
-                Plotly.newPlot('plot', [{x: res[0].func_x, y: res[0].func_y}, ...res.map(el => ({
-                	x: el.x,
-                	y: el.y	
+
+
+                Plotly.newPlot('plot', [{
+                    x: res[0].func_x,
+                    y: res[0].func_y
+                }, ...res.map(el => ({
+                    x: el.x,
+                    y: el.y
                 }))]);
                 Plotly.newPlot('error_plot', res.map(el => ({
-                	x: el.residual_x,
-                	y: el.residual_y	
+                    x: el.residual_x,
+                    y: el.residual_y
                 })));
             })
 
