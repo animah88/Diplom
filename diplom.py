@@ -45,7 +45,7 @@ def main (start,end,mu,eps_mu,func,typ):
         d0=dfunc.subs(x,z_a)
         d1=dfunc.subs(x,z_b)
 
-        if typ=="polynomial":            
+        if typ == "polynomial":            
             alpha=(d0*(z_b**3 - z_a**3)-3*(f1-f0)*z_a**2)/((z_b-z_a)*(5*z_a**3+5*z_b*z_a**2 +2*z_a*z_b**2))
             beta=(d1*(z_b**3 - z_a**3)-3*(f1-f0)*z_b**2)/((z_b-z_a)*(5*z_b**3+5*z_a*z_b**2 +2*z_b*z_a**2))
 
@@ -59,6 +59,18 @@ def main (start,end,mu,eps_mu,func,typ):
                 
             result = a*x**3 +b*x**2+c*x+d
 
+        if typ == "exponential":
+            A = ( (d0*z_a*ln(z_b/z_a)-f0*ln(f1/f0)) / (f0*(2*ln(z_b/z_a)*z_a**2 - z_b**2 +z_a**2)) )/((f1*(z_a*ln(z_b/z_a)-z_b+z_a)*(2*ln(z_b/z_a)*z_b**2-z_b**2+z_a**2)) - (( z_a*ln(z_b/z_a)-z_b+z_a)*(2*ln(z_b/z_a)*z_b**2-z_b**2+z_a**2))/(z_b*ln(z_b/z_a)-z_b+z_a )*(2*ln(z_b/z_a)*z_a**2-z_b**2+z_a**2))
+            B = (z_b*d1*ln(z_b/z_a)-ln(f1/f0)*f1) / (f1*(2*ln(z_b/z_a)*z_b**2-z_b**2+z_a**2)*(f1*(2*ln(z_b/z_a)*z_a**2-z_b**2+z_a**2)*(z_b*ln(z_b/z_a)-z_b+z_a)-1))
+            
+            c = N(A-B)
+            b = N(((z_b*d1*ln(z_b/z_a))/(f1*(z_b*ln(z_b/z_a)-z_b+z_a))) - c*((2*ln(z_b/z_a)*z_b**2-z_b**2+z_a**2)/(z_b*ln(z_b/z_a)-z_b+z_a))-ln(f1/f0)/(z_b*ln(z_b/z_a)-z_b+z_a))
+            d = N((ln(f1/f0)-b*(z_b-z_a)-c*(z_b**2-z_a**2))/(ln(z_b/z_a)))
+            a = N(f0/(exp(b*z_a+c*z_a**2)*z_a**d))
+            
+            result = a*exp(b*x+c*x**2)*(x**d)
+
+
         max_mu=residual(z_a,z_b,func,result)
         # print("max = {0}, a = {1}, b = {2}".format(max_mu,z_a,z_b))
         
@@ -68,6 +80,7 @@ def main (start,end,mu,eps_mu,func,typ):
            
             continue    
         elif ((max_mu < mu*(1-eps_mu))&(temp_b < end)&(max_mu!=0)):
+            print("max = {0}, a = {1}, b = {2}".format(max_mu,z_a,z_b))
             temp = z_b
             z_b = (3*temp_b-temp_a)/2
             temp_b=z_b
@@ -94,11 +107,16 @@ def main (start,end,mu,eps_mu,func,typ):
             residual_x.append(z_b)
             array_y.append(result.subs(x,z_b))
             residual_y.append(abs(result.subs(x,z_b)-func.subs(x,z_b)))
+             
+            if (typ=="polynomial"):
+                latech = latex(pres(a)*x**3 + pres(b)*x**2 + pres(c)*x + pres(d))
+            else:
+                latech = latex(pres(a)*(exp( pres(b)*x + pres(c)*x**2  ))*(x**pres(d)))
 
             array.append({
                 'start': pres(z_a),
                 'end': pres(z_b),
-                'formula': latex(pres(a)*x**3 + pres(b)*x**2 + pres(c)*x + pres(d)),
+                'formula': latech,
                 'x': list(map(lambda x: float(x), array_x)),
                 'y': list(map(lambda y: float(y), array_y)),
                 'func_x': list(x_val_func),
@@ -122,7 +140,7 @@ def main (start,end,mu,eps_mu,func,typ):
 
     
     # return list(map(toString,array))
-    # return array
+    return array
     
     
 
