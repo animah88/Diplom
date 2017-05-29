@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+</head>
+
+<body>
+    <div>
+        <p>Початок:
+            <input type="text" id="start" value="0.5">
+        </p>
+        <p>Кінець:
+            <input type="text" id="end" value="2">
+        </p>
+        <p>Похибка:
+            <input type="text" id="mu" value="0.02">
+        </p>
+        <p>Похибка похибки:
+            <input type="text" id="eps_mu" value="0.3">
+        </p>
+        <p>Функція:
+            <input type="text" id="func" value="x^2">
+        </p>
+        <button id="go">GO</button>
+        <div id="iterations"> </div>
+        <div id="plot"></div>
+        <div id="error_plot"></div>
+    </div>
+    <script>
+    document.getElementById("go").addEventListener("click", function() {
+        func = document.getElementById('func').value
+        mu = +document.getElementById('mu').value
+        start = +document.getElementById('start').value
+        end = +document.getElementById('end').value
+        eps_mu = +document.getElementById('eps_mu').value
+
+        iterations = document.getElementById('iterations')
+        fetch("http://localhost:5000/diplom", {
+                method: 'POST',
+                body: JSON.stringify({
+                    func,
+                    mu,
+                    start,
+                    end,
+                    eps_mu
+                })
+
+            }).then(res => res.json())
+            .then(res => {
+                console.log(res)
+                let html
+                let formulas = res.map((iter, i) => {
+                    return `
+                    	<h2>Ланка №${i+1}</h2>
+                    	<h4>a = ${iter.start}  b =${iter.end}</h4>
+                    	<h4 id="formula${i}">$$${iter.formula}$$</h4>
+
+                    `
+                })
+                iterations.innerHTML = formulas.join('')
+                // let formula = document.getElementById('formula1')
+                // console.log(formula)
+                MathJax.Hub.Queue(["Typeset", MathJax.Hub, iterations])
+                
+ 
+                Plotly.newPlot('plot', [{x: res[0].func_x, y: res[0].func_y}, ...res.map(el => ({
+                	x: el.x,
+                	y: el.y	
+                }))]);
+                Plotly.newPlot('error_plot', res.map(el => ({
+                	x: el.residual_x,
+                	y: el.residual_y	
+                })));
+            })
+
+
+        // fetch("http://localhost:5000")
+        // .then(res => res.text())
+        // .then(res => console.log("Server response: ", res))
+
+    })
+
+    // after_point= document.getElementById('after_point')
+    </script>
+</body>
+
+</html>
