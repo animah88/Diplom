@@ -1,5 +1,6 @@
 from sympy import *
 import numpy as np
+from sympy.abc import e,f,g,r
 x = symbols('x')
 init_printing(use_unicode = True)
 
@@ -32,6 +33,7 @@ def main (start,end,mu,eps_mu,func,typ):
     z_a = start
     z_b = end
 
+    global a,b,c,d
     x_val_func = np.linspace(start,end,50)
     y_val_func = np.vectorize(lambdify(x,func))(x_val_func)
 
@@ -49,17 +51,10 @@ def main (start,end,mu,eps_mu,func,typ):
         d1=dfunc.subs(x,z_b)
 
         if typ == "polynomial":            
-            alpha = (d0*(z_b**3 - z_a**3)-3*(f1-f0)*z_a**2)/((z_b-z_a)*(5*z_a**3+5*z_b*z_a**2 +2*z_a*z_b**2))
-            beta = (d1*(z_b**3 - z_a**3)-3*(f1-f0)*z_b**2)/((z_b-z_a)*(5*z_b**3+5*z_a*z_b**2 +2*z_b*z_a**2))
-
-            lamda = (2*z_a**2-z_b**2-z_b*z_a)/(5*z_a**3+5*z_b*z_a**2 +2*z_a*z_b**2)
-            gamma = (2*z_b**2-z_a**2-z_b*z_a)/(5*z_b**3+5*z_a*z_b**2 +2*z_b*z_a**2)
-
-            c=N((alpha-beta)/(gamma-lamda))
-            b=N(alpha+c*lamda)
-            a=N((f1-f0+b*(z_a**2-z_b**2)+c*(z_a-z_b))/(z_b**3-z_a**3))
-            d=N(f0-a*z_a**3-b*z_a**2-c*z_a)
-                
+           
+            system = Matrix(( (z_a**3,z_a**2,z_a,1,f0), (z_b**3,z_b**2,z_b,1,f1),(3*z_a**2,2*z_a,1,0,d0),(3*z_b**2,2*z_b,1,0,d1)))
+            roots = solve_linear_system(system, e, f, g, r)
+            a,b,c,d=N(roots[e],5),N(roots[f],5),N(roots[g],5),N(roots[r],5)
             result = a*x**3 +b*x**2+c*x+d
 
         if typ == "exponential":
