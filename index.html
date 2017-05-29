@@ -78,15 +78,18 @@
 
                 Plotly.newPlot('plot', [{
                     x: res[0].func_x,
-                    y: res[0].func_y
-                }, ...res.map(el => ({
+                    y: res[0].func_y,
+                    name: 'Функція'
+                }, ...res.map((el,i) => ({
                     x: el.x,
-                    y: el.y
-                }))]);
-                Plotly.newPlot('error_plot', res.map(el => ({
+                    y: el.y,
+                    name: 'Ланка '+(i+1)
+                }))], {title: 'Графік функції та сплайна', xaxis: {range: [start*0.99, end*1.01]}});
+                Plotly.newPlot('error_plot', res.map((el,i) => ({
                     x: el.residual_x,
-                    y: el.residual_y
-                })));
+                    y: el.residual_y,
+                    name: 'Ланка '+(i+1)
+                })), {title: 'Графік похибки', xaxis: {range: [start*0.99, end*1.01]}});
             })
 
 

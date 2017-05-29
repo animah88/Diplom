@@ -25,7 +25,7 @@ def residual(a,b,func,result):
         t+=h
     return max_residual
 
-pres = myRound(3)
+pres = myRound(4)
 
 def main (start,end,mu,eps_mu,func,typ):
     print("Type is:",typ)
