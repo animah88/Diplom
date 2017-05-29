@@ -26,9 +26,9 @@
             <input type="text" id="func" value="x^2">
         </p>
         <p>Тип ланки:
-            <select name="combo_box" id="type">
-                <option value="polynom">polynomial</option>
-                <option value="exponent">exponential</option>
+            <select name="combo_box" id="typ">
+                <option value="polynomial" selected="selected">polynomial</option>
+                <option value="exponential">exponential</option>
             </select>
         </p>
         <button id="go">GO</button>
@@ -43,6 +43,8 @@
         start = +document.getElementById('start').value
         end = +document.getElementById('end').value
         eps_mu = +document.getElementById('eps_mu').value
+        
+        typ = +document.getElementById('typ').value
 
         iterations = document.getElementById('iterations')
         fetch("http://localhost:5000/diplom", {
@@ -52,7 +54,8 @@
                     mu,
                     start,
                     end,
-                    eps_mu
+                    eps_mu,
+                    typ
                 })
 
             }).then(res => res.json())

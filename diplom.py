@@ -6,16 +6,10 @@ init_printing(use_unicode=True)
 def toString(arr):
     return list(map(lambda x: str(x), arr))
 
-
-    
-    
-
 def myRound(after_point):
     def f(val):
         return round(val, after_point)
     return f
-
-pres = myRound(3)
 
 def residual(a,b,func,result):
     t=a
@@ -28,7 +22,10 @@ def residual(a,b,func,result):
         t+=h
     return max_residual
 
-def main (start,end,mu,eps_mu,func):
+pres = myRound(3)
+
+def main (start,end,mu,eps_mu,func,typ):
+    print("Type is:",typ)
     z_a = start
     z_b = end
 
@@ -48,18 +45,20 @@ def main (start,end,mu,eps_mu,func):
         d0=dfunc.subs(x,z_a)
         d1=dfunc.subs(x,z_b)
 
-        alpha=(d0*(z_b**3 - z_a**3)-3*(f1-f0)*z_a**2)/((z_b-z_a)*(5*z_a**3+5*z_b*z_a**2 +2*z_a*z_b**2))
-        beta=(d1*(z_b**3 - z_a**3)-3*(f1-f0)*z_b**2)/((z_b-z_a)*(5*z_b**3+5*z_a*z_b**2 +2*z_b*z_a**2))
+        if typ=="polynomial":            
+            alpha=(d0*(z_b**3 - z_a**3)-3*(f1-f0)*z_a**2)/((z_b-z_a)*(5*z_a**3+5*z_b*z_a**2 +2*z_a*z_b**2))
+            beta=(d1*(z_b**3 - z_a**3)-3*(f1-f0)*z_b**2)/((z_b-z_a)*(5*z_b**3+5*z_a*z_b**2 +2*z_b*z_a**2))
 
-        lamda=(2*z_a**2-z_b**2-z_b*z_a)/(5*z_a**3+5*z_b*z_a**2 +2*z_a*z_b**2)
-        gamma=(2*z_b**2-z_a**2-z_b*z_a)/(5*z_b**3+5*z_a*z_b**2 +2*z_b*z_a**2)
+            lamda=(2*z_a**2-z_b**2-z_b*z_a)/(5*z_a**3+5*z_b*z_a**2 +2*z_a*z_b**2)
+            gamma=(2*z_b**2-z_a**2-z_b*z_a)/(5*z_b**3+5*z_a*z_b**2 +2*z_b*z_a**2)
 
-        c=N((alpha-beta)/(gamma-lamda))
-        b=N(alpha+c*lamda)
-        a=N((f1-f0+b*(z_a**2-z_b**2)+c*(z_a-z_b))/(z_b**3-z_a**3))
-        d=N(f0-a*z_a**3-b*z_a**2-c*z_a)
-            
-        result = a*x**3 +b*x**2+c*x+d
+            c=N((alpha-beta)/(gamma-lamda))
+            b=N(alpha+c*lamda)
+            a=N((f1-f0+b*(z_a**2-z_b**2)+c*(z_a-z_b))/(z_b**3-z_a**3))
+            d=N(f0-a*z_a**3-b*z_a**2-c*z_a)
+                
+            result = a*x**3 +b*x**2+c*x+d
+
         max_mu=residual(z_a,z_b,func,result)
         # print("max = {0}, a = {1}, b = {2}".format(max_mu,z_a,z_b))
         
@@ -123,12 +122,12 @@ def main (start,end,mu,eps_mu,func):
 
     
     # return list(map(toString,array))
-    return array
+    # return array
     
     
 
 
-# print(main(0.5,3.1,0.02,0.03,sin(x)))
+# print(main(0.5,3.1,0.02,0.03,sin(x),"polynomial"))
 
 # Write Your function
 # func = exp(x)

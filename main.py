@@ -15,7 +15,7 @@ def hello():
 def aproximation():
 	data = json.loads(request.data)
 	print(data)
-	result = diplom.main(data['start'], data['end'], data['mu'],data['eps_mu'],simplify(data['func'] ))
+	result = diplom.main(data['start'], data['end'], data['mu'],data['eps_mu'],simplify(data['func'] ),data['typ'])
 	# print(result)
 	return jsonify(result)
 	# return jsonify(diplom.main(0.5,3.1,0.02,0.03,sin(x)))
