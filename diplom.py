@@ -138,7 +138,8 @@ def main (start,end,mu,eps_mu,func,typ):
                 'func_x': list(x_val_func),
                 'func_y': list(y_val_func),
                 'residual_x': list(map(lambda x: float(x), residual_x)),
-                'residual_y': list(map(lambda y: float(y), residual_y))
+                'residual_y': list(map(lambda y: float(y), residual_y)),
+                'formula_func': latex(simplify(func))
                 })
 
             if(z_b == end):
