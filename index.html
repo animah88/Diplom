@@ -2,8 +2,7 @@
 <html lang="en">
 
 <head>
-    <!-- <meta charset="UTF-8"> -->
-    <title>Document</title>
+    <title>Aproximation</title>
     <meta charset="UTF-8" name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -13,14 +12,54 @@
     body {
         width: 70%;
         margin: auto;
-        text-align: center;
+        /*text-align: center;*/
+    }
+    /*input[type=text] {
+        width: 300px;
+        padding: 2px 2px;
+        margin: 4px 0;
+        box-sizing: border-box;
+    }*/
+    
+    input[type=text] {
+        border: none;
+        border-bottom: 2px solid green;
     }
     
+    input[type=text]:focus {
+        border: 2px solid #555;
+    }
     
+    select {
+        background: transparent;
+        border: none;
+        border-bottom: 2px solid green;
+        font-size: 14px;
+        height: 29px;
+        padding: 5px;
+        /* If you add too much padding here, the options won't show in IE */
+        /*width: 268px;*/
+    }
+    
+    p {
+        font-family: "Courier New Lucida Console", Sans-serif;
+    }
+    
+    button {
+        background-color: #4CAF50;
+        border: none;
+        color: white;
+        padding: 10px 10px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+    }
+    /* Green */
     </style>
 </head>
 
-<body >
+<body>
     <div>
         <p>Початок:
             <input type="text" id="start" value="0.5">
@@ -43,7 +82,7 @@
                 <option value="exponential">exponential</option>
             </select>
         </p>
-        <button id="go">GO</button>
+        <button id="go">Знайти</button>
         <div id="spiner" class="w3-container" style="display: none">
             <p><i class="fa fa-spinner w3-spin" style="font-size:64px"></i></p>
         </div>
