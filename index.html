@@ -24,10 +24,12 @@
     input[type=text] {
         border: none;
         border-bottom: 2px solid green;
+        width: 80px;
     }
     
     input[type=text]:focus {
         border: 2px solid #555;
+
     }
     
     select {
@@ -35,7 +37,7 @@
         border: none;
         border-bottom: 2px solid green;
         font-size: 14px;
-        height: 29px;
+        height: 32px;
         padding: 5px;
         /* If you add too much padding here, the options won't show in IE */
         /*width: 268px;*/
@@ -61,9 +63,9 @@
 
 <body>
     <div>
-        <p>Початок:
+        <p>Початок:  
             <input type="text" id="start" value="0.5">
-        </p>
+       </p>
         <p>Кінець:
             <input type="text" id="end" value="2">
         </p>
@@ -121,7 +123,7 @@
 
                 let formulas = res.map((iter, i) => {
                     return `
-                    	<h2>Ланка №${i+1}</h2>
+                    	<h3>Ланка №${i+1}</h2>
                     	<h4>a = ${iter.start}  b =${iter.end}</h4>
                     	<h4 id="formula${i}">$$${iter.formula}$$</h4>
 
