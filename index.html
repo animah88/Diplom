@@ -15,6 +15,7 @@
         /*text-align: center;*/
     }
     /*input[type=text] {
+    	text-align: center;
         width: 300px;
         padding: 2px 2px;
         margin: 4px 0;
@@ -22,15 +23,15 @@
     }*/
     
     input[type=text] {
-        border: none;
-        border-bottom: 2px solid green;
-        width: 80px;
+        /*border: none;*/
+        /*border-bottom: 2px solid green;*/
+        width: 120px;
+        /*text-align: center;*/
     }
-    
-    input[type=text]:focus {
+    /*input[type=text]:focus {
         border: 2px solid #555;
 
-    }
+    }*/
     
     select {
         background: transparent;
@@ -57,26 +58,36 @@
         display: inline-block;
         font-size: 16px;
     }
+    
+    #content {
+        position: relative;
+        left: 300px;
+        border: 3px solid #73AD21;
+    }
     /* Green */
     </style>
 </head>
 
 <body>
-    <div>
-        <p>Початок:  
-            <input type="text" id="start" value="0.5">
-       </p>
+    <div class="w3-bar w3-green">
+        <br>
+        <br>
+    </div>
+    <div id="content">
+        <p>Функція:
+            <input class="w3-input" type="text" id="func" value="x^2">
+        </p>
+        <p>Початок:
+            <input class="w3-input" type="text" id="start" value="0.5">
+        </p>
         <p>Кінець:
-            <input type="text" id="end" value="2">
+            <input class="w3-input" type="text" id="end" value="2">
         </p>
         <p>Похибка:
-            <input type="text" id="mu" value="0.02">
+            <input class="w3-input" type="text" id="mu" value="0.02">
         </p>
         <p>Похибка похибки:
-            <input type="text" id="eps_mu" value="0.3">
-        </p>
-        <p>Функція:
-            <input type="text" id="func" value="x^2">
+            <input class="w3-input" type="text" id="eps_mu" value="0.3">
         </p>
         <p>Тип ланки:
             <select name="combo_box" id="typ">
