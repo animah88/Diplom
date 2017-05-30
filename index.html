@@ -2,8 +2,11 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
+    <!-- <meta charset="UTF-8"> -->
     <title>Document</title>
+    <meta charset="UTF-8" name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
     <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML"></script>
 </head>
@@ -32,18 +35,25 @@
             </select>
         </p>
         <button id="go">GO</button>
+
+        <div id="spiner" class="w3-container" style="display: none">
+            <p><i class="fa fa-spinner w3-spin" style="font-size:64px"></i></p>
+        </div>
+
         <div id="iterations"> </div>
         <div id="plot"></div>
         <div id="error_plot"></div>
     </div>
     <script>
     document.getElementById("go").addEventListener("click", function() {
+    	
+    	document.getElementById('spiner').style = 'display: block'
         func = document.getElementById('func').value
         mu = +document.getElementById('mu').value
         start = +document.getElementById('start').value
         end = +document.getElementById('end').value
         eps_mu = +document.getElementById('eps_mu').value
-        
+
         typ = document.getElementById('typ').value
 
         iterations = document.getElementById('iterations')
@@ -61,6 +71,7 @@
             }).then(res => res.json())
             .then(res => {
                 console.log(res)
+                document.getElementById('spiner').style = 'display: none'
                 let html
                 let formulas = res.map((iter, i) => {
                     return `
@@ -80,16 +91,26 @@
                     x: res[0].func_x,
                     y: res[0].func_y,
                     name: 'Функція'
-                }, ...res.map((el,i) => ({
+                }, ...res.map((el, i) => ({
                     x: el.x,
                     y: el.y,
-                    name: 'Ланка '+(i+1)
-                }))], {title: 'Графік функції та сплайна', xaxis: {range: [start*0.99, end*1.01]}});
-                Plotly.newPlot('error_plot', res.map((el,i) => ({
+                    name: 'Ланка ' + (i + 1)
+                }))], {
+                    title: 'Графік функції та сплайна',
+                    xaxis: {
+                        range: [start * 0.99, end * 1.01]
+                    }
+                });
+                Plotly.newPlot('error_plot', res.map((el, i) => ({
                     x: el.residual_x,
                     y: el.residual_y,
-                    name: 'Ланка '+(i+1)
-                })), {title: 'Графік похибки', xaxis: {range: [start*0.99, end*1.01]}});
+                    name: 'Ланка ' + (i + 1)
+                })), {
+                    title: 'Графік похибки',
+                    xaxis: {
+                        range: [start * 0.99, end * 1.01]
+                    }
+                });
             })
 
 

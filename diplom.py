@@ -14,7 +14,7 @@ def myRound(after_point):
 
 def residual(a,b,func,result):
     t = a
-    h = (b-a)/51
+    h = (b-a)/50
     max_residual = 0
 
     while(t <= b):        
@@ -29,7 +29,7 @@ def residual(a,b,func,result):
 pres = myRound(4)
 
 def main (start,end,mu,eps_mu,func,typ):
-    print("Type is:",typ)
+    # print("Type is:",typ)
     z_a = start
     z_b = end
 
@@ -52,20 +52,31 @@ def main (start,end,mu,eps_mu,func,typ):
 
         if typ == "polynomial":            
            
-            system = Matrix(( (z_a**3,z_a**2,z_a,1,f0), (z_b**3,z_b**2,z_b,1,f1),(3*z_a**2,2*z_a,1,0,d0),(3*z_b**2,2*z_b,1,0,d1)))
+            system = Matrix(( (z_a**3,z_a**2,z_a,1,f0), (z_b**3,z_b**2,z_b,1,f1),
+                (3*z_a**2,2*z_a,1,0,d0),(3*z_b**2,2*z_b,1,0,d1)))
             roots = solve_linear_system(system, e, f, g, r)
             a,b,c,d=N(roots[e],5),N(roots[f],5),N(roots[g],5),N(roots[r],5)
             result = a*x**3 +b*x**2+c*x+d
 
         if typ == "exponential":
-            A = ( (d0*z_a*ln(z_b/z_a)-f0*ln(f1/f0)) / (f0*(2*ln(z_b/z_a)*z_a**2 - z_b**2 +z_a**2)) )/((f1*(z_a*ln(z_b/z_a)-z_b+z_a)*(2*ln(z_b/z_a)*z_b**2-z_b**2+z_a**2)) - (( z_a*ln(z_b/z_a)-z_b+z_a)*(2*ln(z_b/z_a)*z_b**2-z_b**2+z_a**2))/(z_b*ln(z_b/z_a)-z_b+z_a )*(2*ln(z_b/z_a)*z_a**2-z_b**2+z_a**2))
-            B = (z_b*d1*ln(z_b/z_a)-ln(f1/f0)*f1) / (f1*(2*ln(z_b/z_a)*z_b**2-z_b**2+z_a**2)*(f1*(2*ln(z_b/z_a)*z_a**2-z_b**2+z_a**2)*(z_b*ln(z_b/z_a)-z_b+z_a)-1))
+            A = ( (d0*z_a*ln(z_b/z_a)-f0*ln(f1/f0)) / 
+                (f0*(2*ln(z_b/z_a)*z_a**2 - z_b**2 +z_a**2))) /\
+                    ((f1*(z_a*ln(z_b/z_a)-z_b+z_a)*(2*ln(z_b/z_a)*z_b**2-z_b**2+z_a**2)) - 
+                        (( z_a*ln(z_b/z_a)-z_b+z_a)*(2*ln(z_b/z_a)*z_b**2-z_b**2+z_a**2))/
+                            (z_b*ln(z_b/z_a)-z_b+z_a )*(2*ln(z_b/z_a)*z_a**2-z_b**2+z_a**2))
             
-            c = N(A-B)
-            b = N(((z_b*d1*ln(z_b/z_a))/(f1*(z_b*ln(z_b/z_a)-z_b+z_a))) - c*((2*ln(z_b/z_a)*z_b**2-z_b**2+z_a**2)/(z_b*ln(z_b/z_a)-z_b+z_a))-ln(f1/f0)/(z_b*ln(z_b/z_a)-z_b+z_a))
-            d = N((ln(f1/f0)-b*(z_b-z_a)-c*(z_b**2-z_a**2))/(ln(z_b/z_a)))
-            a = N(f0/(exp(b*z_a+c*z_a**2)*z_a**d))
-            print("SHIT!",a,b,c,d )
+            B = (z_b*d1*ln(z_b/z_a)-ln(f1/f0)*f1) /\
+                (f1*(2*ln(z_b/z_a)*z_b**2-z_b**2+z_a**2)*
+                    (f1*(2*ln(z_b/z_a)*z_a**2-z_b**2+z_a**2)*(z_b*ln(z_b/z_a)-z_b+z_a)-1))
+            
+            c = N(A-B,5)
+            b = N(((z_b*d1*ln(z_b/z_a))/(f1*(z_b*ln(z_b/z_a)-z_b+z_a))) - 
+                c*((2*ln(z_b/z_a)*z_b**2-z_b**2+z_a**2)/(z_b*ln(z_b/z_a)-z_b+z_a))-
+                    ln(f1/f0)/(z_b*ln(z_b/z_a)-z_b+z_a),5)
+            d = N((ln(f1/f0)-b*(z_b-z_a)-c*(z_b**2-z_a**2))/(ln(z_b/z_a)),5)
+            a = N(f0/(exp(b*z_a+c*z_a**2)*z_a**d),5)
+            
+            # print("Warning!",a,b,c,d )
             result = a*exp(b*x+c*x**2)*(x**d)
 
 
@@ -87,7 +98,7 @@ def main (start,end,mu,eps_mu,func,typ):
         else:
             # array.append([z_a,z_b,a,b,c,d])
             t=z_a
-            h=(z_b-z_a)/50
+            h=(z_b-z_a)/100
             array_x = []
             array_y = []
             residual_x=[]
@@ -97,14 +108,21 @@ def main (start,end,mu,eps_mu,func,typ):
                 array_y.append(result.subs(x,t))
                 residual_x.append(t)
                 # residual_y.append(abs(result.subs(x,t)-func.subs(x,t)))
-                residual_y.append(abs(result.subs(x,t)-func.subs(x,t)))
+                if abs(result.subs(x,t)-func.subs(x,t))<0.00001:
+                    residual_y.append(0)
+                else:
+                    residual_y.append(abs(result.subs(x,t)-func.subs(x,t)))
                 # print("residual",abs(result.subs(x,t)-func.subs(x,t)))
                 # temp=abs(func.subs(x,t)-result.subs(x,t))
                 t+=h
             array_x.append(z_b)
             residual_x.append(z_b)
             array_y.append(result.subs(x,z_b))
-            residual_y.append(abs(result.subs(x,z_b)-func.subs(x,z_b)))
+            if abs(result.subs(x,t)-func.subs(x,t))<0.00001:
+                    residual_y.append(0)
+            else:
+                residual_y.append(abs(result.subs(x,t)-func.subs(x,t)))
+            # residual_y.append(abs(result.subs(x,z_b)-func.subs(x,z_b)))
              
             if (typ=="polynomial"):
                 latech = latex(pres(a)*x**3 + pres(b)*x**2 + pres(c)*x + pres(d))
@@ -133,12 +151,6 @@ def main (start,end,mu,eps_mu,func,typ):
             z_b = end
             temp_a = z_a
             temp_b = z_b
-            continue
-
-
-    
+            continue    
     # return list(map(toString,array))
     return array
-    
-    
-
