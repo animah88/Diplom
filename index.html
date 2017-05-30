@@ -9,9 +9,18 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
     <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+    <style>
+    body {
+        width: 70%;
+        margin: auto;
+        text-align: center;
+    }
+    
+    
+    </style>
 </head>
 
-<body>
+<body >
     <div>
         <p>Початок:
             <input type="text" id="start" value="0.5">
@@ -35,19 +44,17 @@
             </select>
         </p>
         <button id="go">GO</button>
-
         <div id="spiner" class="w3-container" style="display: none">
             <p><i class="fa fa-spinner w3-spin" style="font-size:64px"></i></p>
         </div>
-
         <div id="iterations"> </div>
         <div id="plot"></div>
         <div id="error_plot"></div>
     </div>
     <script>
     document.getElementById("go").addEventListener("click", function() {
-    	
-    	document.getElementById('spiner').style = 'display: block'
+
+        document.getElementById('spiner').style = 'display: block'
         func = document.getElementById('func').value
         mu = +document.getElementById('mu').value
         start = +document.getElementById('start').value
@@ -72,7 +79,7 @@
             .then(res => {
                 console.log(res)
                 document.getElementById('spiner').style = 'display: none'
-                let html
+
                 let formulas = res.map((iter, i) => {
                     return `
                     	<h2>Ланка №${i+1}</h2>
