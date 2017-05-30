@@ -16,12 +16,9 @@ def residual(a,b,func,result):
     t = a
     h = (b-a)/50
     max_residual = 0
-
     while(t <= b):        
         temp = abs(func.subs(x,t)-result.subs(x,t))
-        # print("SHIT!",result.subs(x,t) )
         if(temp > max_residual):
-
             max_residual=temp
         t+=h
     return max_residual

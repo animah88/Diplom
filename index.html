@@ -146,9 +146,10 @@
                 console.log(res)
                 document.getElementById('spiner').style = 'display: none'
 
-                let formula_func = res[0].formula_func
+                var formula_func = res[0].formula_func
                 console.log(formula_func)
                 // '$$${formula_func}$$'
+                document.getElementById('func_formula').innerHTML = '$$${formula_func}$$'
                 fun = document.getElementById('func_formula')
                 MathJax.Hub.Queue(["Typeset", MathJax.Hub, fun])
                 let formulas = res.map((iter, i) => {
