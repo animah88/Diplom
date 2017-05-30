@@ -10,7 +10,6 @@
     <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML"></script>
     <style>
     body {
-
         width: 60%;
         margin: auto;
         /*text-align: center;*/
@@ -52,7 +51,7 @@
     }
     
     button {
-    	font: normal small-caps normal 16px/1.4 Georgia;
+        font: normal small-caps normal 16px/1.4 Georgia;
         background-color: #4CAF50;
         border: none;
         color: white;
@@ -65,15 +64,15 @@
     }
     
     #content {
-       /* position: relative;
+        /* position: relative;
         left: 300px;*/
-
         /*border: 3px solid #73AD21;*/
         width: 30%;
         margin: auto;
     }
-    h3{
-    	/*font: normal normal 22px/1.4 Georgia;*/
+    
+    h3 {
+        /*font: normal normal 22px/1.4 Georgia;*/
     }
     /* Green */
     </style>
@@ -83,35 +82,38 @@
     <div class="w3-bar w3-green">
         <p style="font-size: 22px;margin: 15px;"> Рівномірна апроксимація</p>
     </div>
-    <div >
-    <div id ="content">
-        <p>Функція:
-            <input class="w3-input" type="text" id="func" value="x^2">
-        </p>
-        <p>Початок інтервалу:
-            <input class="w3-input" type="text" id="start" value="0.5">
-        </p>
-        <p>Кінець інтервалу:
-            <input class="w3-input" type="text" id="end" value="2">
-        </p>
-        <p>Похибка:
-            <input class="w3-input" type="text" id="mu" value="0.02">
-        </p>
-        <p>Відхилення похибки:
-            <input class="w3-input" type="text" id="eps_mu" value="0.01">
-        </p>
-        <p>Тип ланки:
-            <select name="combo_box" id="typ">
-                <option value="polynomial" selected="selected">polynomial</option>
-                <option value="exponential">exponential</option>
-            </select>
-        </p>
-        <button id="go">Знайти</button>
-        <div id="spiner" class="w3-container" style="display: none">
-            <p><i class="fa fa-spinner w3-spin" style="font-size:64px"></i></p>
+    <div>
+        <div id="content">
+            <p>Функція:
+                <input class="w3-input" type="text" id="func" value="x^2">
+            </p>
+            <p>Початок інтервалу:
+                <input class="w3-input" type="text" id="start" value="0.5">
+            </p>
+            <p>Кінець інтервалу:
+                <input class="w3-input" type="text" id="end" value="2">
+            </p>
+            <p>Похибка:
+                <input class="w3-input" type="text" id="mu" value="0.02">
+            </p>
+            <p>Відхилення похибки:
+                <input class="w3-input" type="text" id="eps_mu" value="0.01">
+            </p>
+            <p>Тип ланки:
+                <select name="combo_box" id="typ">
+                    <option value="polynomial" selected="selected">polynomial</option>
+                    <option value="exponential">exponential</option>
+                </select>
+            </p>
+            <button id="go">Знайти</button>
+            <div id="spiner" class="w3-container" style="display: none">
+                <p><i class="fa fa-spinner w3-spin" style="font-size:64px"></i></p>
+            </div>
         </div>
+        <br> <br>
+        <div id="formula_div" style="font-size: 22px">
+            
         </div>
-        <div id ="func_formula"></div>
         <div id="iterations"> </div>
         <div id="plot"></div>
         <div id="error_plot"></div>
@@ -146,12 +148,12 @@
                 console.log(res)
                 document.getElementById('spiner').style = 'display: none'
 
-                var formula_func = res[0].formula_func
-                console.log(formula_func)
-                // '$$${formula_func}$$'
-                document.getElementById('func_formula').innerHTML = '$$${formula_func}$$'
-                fun = document.getElementById('func_formula')
-                MathJax.Hub.Queue(["Typeset", MathJax.Hub, fun])
+                let func_div = document.getElementById('formula_div')
+                    // console.log(formula_func)
+                    // '$$${formula_func}$$'
+                func_div.innerHTML = 'Функція що апроксимується:' +'$$' + res[0].formula_func + '$$'
+                    // fun = document.getElementById('func_formula')
+                MathJax.Hub.Queue(["Typeset", MathJax.Hub, func_div])
                 let formulas = res.map((iter, i) => {
                     return `
                     	<h3>Ланка №${i+1}</h2>
@@ -160,11 +162,7 @@
 
                     `
                 })
-                iterations.innerHTML =formulas.join('')
-                    // let formula = document.getElementById('formula1')
-                    // console.log(formula)
-                // MathJax.Hub.Queue(["Typeset", MathJax.Hub, "akjsakjsbakjsbkajsbc"])
-                
+                iterations.innerHTML = formulas.join('')
                 MathJax.Hub.Queue(["Typeset", MathJax.Hub, iterations])
 
 
