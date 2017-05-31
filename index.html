@@ -180,7 +180,7 @@
                 })), {
                     title: 'Графік похибки',
                     xaxis: {
-                        range: [start * 0.99, end * 1.01]
+                        range: [start - Math.abs(start * 0.01), end * 1.01]
                     }
                 });
             })

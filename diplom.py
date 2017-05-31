@@ -100,18 +100,18 @@ def main (start,end,mu,eps_mu,func,typ):
                 array_y.append(result.subs(x,t))
                 residual_x.append(t)
                 
-                if abs(result.subs(x,t)-func.subs(x,t))<0.00001:
-                    residual_y.append(0)
-                else:
-                    residual_y.append(abs(result.subs(x,t)-func.subs(x,t)))
+                # if abs(result.subs(x,t)-func.subs(x,t))<0.00001:
+                #     residual_y.append(0)
+                # else:
+                residual_y.append(abs(result.subs(x,t)-func.subs(x,t)))
                 t+=h
             array_x.append(z_b)
             residual_x.append(z_b)
             array_y.append(result.subs(x,z_b))
-            if abs(result.subs(x,t)-func.subs(x,t))<0.00001:
-                    residual_y.append(0)
-            else:
-                residual_y.append(abs(result.subs(x,t)-func.subs(x,t)))
+            # if abs(result.subs(x,t)-func.subs(x,t))<0.00001:
+            #         residual_y.append(0)
+            # else:
+            residual_y.append(abs(result.subs(x,t)-func.subs(x,t)))
             
              
             if (typ=="polynomial"):
