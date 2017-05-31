@@ -26,7 +26,6 @@ def residual(a,b,func,result):
 pres = myRound(4)
 
 def main (start,end,mu,eps_mu,func,typ):
-    # print("Type is:",typ)
     z_a = start
     z_b = end
 
@@ -39,16 +38,14 @@ def main (start,end,mu,eps_mu,func,typ):
 
     dfunc=diff(func)
     array = []
-    while(True):
-        
+    while(True):        
         f0=func.subs(x,z_a)
         f1=func.subs(x,z_b)
 
         d0=dfunc.subs(x,z_a)
         d1=dfunc.subs(x,z_b)
 
-        if typ == "polynomial":            
-           
+        if typ == "polynomial":                     
             system = Matrix(( (z_a**3,z_a**2,z_a,1,f0), (z_b**3,z_b**2,z_b,1,f1),
                 (3*z_a**2,2*z_a,1,0,d0),(3*z_b**2,2*z_b,1,0,d1)))
             roots = solve_linear_system(system, e, f, g, r)
@@ -73,13 +70,11 @@ def main (start,end,mu,eps_mu,func,typ):
             d = N((ln(f1/f0)-b*(z_b-z_a)-c*(z_b**2-z_a**2))/(ln(z_b/z_a)),5)
             a = N(f0/(exp(b*z_a+c*z_a**2)*z_a**d),5)
             
-            # print("Warning!",a,b,c,d )
             result = a*exp(b*x+c*x**2)*(x**d)
 
 
         max_mu = residual(z_a,z_b,func,result)
-        # print("max = {0}, a = {1}, b = {2}".format(max_mu,z_a,z_b))
-        
+                
         if (max_mu > mu):
             z_b = (temp_a + temp_b)/ 2
             temp_b=z_b
@@ -93,7 +88,7 @@ def main (start,end,mu,eps_mu,func,typ):
             temp_a=temp       
             continue
         else:
-            # array.append([z_a,z_b,a,b,c,d])
+            
             t=z_a
             h=(z_b-z_a)/100
             array_x = []
@@ -104,13 +99,11 @@ def main (start,end,mu,eps_mu,func,typ):
                 array_x.append(t)
                 array_y.append(result.subs(x,t))
                 residual_x.append(t)
-                # residual_y.append(abs(result.subs(x,t)-func.subs(x,t)))
+                
                 if abs(result.subs(x,t)-func.subs(x,t))<0.00001:
                     residual_y.append(0)
                 else:
                     residual_y.append(abs(result.subs(x,t)-func.subs(x,t)))
-                # print("residual",abs(result.subs(x,t)-func.subs(x,t)))
-                # temp=abs(func.subs(x,t)-result.subs(x,t))
                 t+=h
             array_x.append(z_b)
             residual_x.append(z_b)
@@ -119,7 +112,7 @@ def main (start,end,mu,eps_mu,func,typ):
                     residual_y.append(0)
             else:
                 residual_y.append(abs(result.subs(x,t)-func.subs(x,t)))
-            # residual_y.append(abs(result.subs(x,z_b)-func.subs(x,z_b)))
+            
              
             if (typ=="polynomial"):
                 latech = latex(pres(a)*x**3 + pres(b)*x**2 + pres(c)*x + pres(d))
@@ -150,5 +143,5 @@ def main (start,end,mu,eps_mu,func,typ):
             temp_a = z_a
             temp_b = z_b
             continue    
-    # return list(map(toString,array))
+    
     return array

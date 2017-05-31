@@ -110,9 +110,9 @@
                 <p><i class="fa fa-spinner w3-spin" style="font-size:64px"></i></p>
             </div>
         </div>
-        <br> <br>
+        <br>
+        <br>
         <div id="formula_div" style="font-size: 22px">
-            
         </div>
         <div id="iterations"> </div>
         <div id="plot"></div>
@@ -127,9 +127,7 @@
         start = +document.getElementById('start').value
         end = +document.getElementById('end').value
         eps_mu = +document.getElementById('eps_mu').value
-
         typ = document.getElementById('typ').value
-
 
         iterations = document.getElementById('iterations')
         fetch("http://localhost:5000/diplom", {
@@ -147,24 +145,19 @@
             .then(res => {
                 console.log(res)
                 document.getElementById('spiner').style = 'display: none'
-
                 let func_div = document.getElementById('formula_div')
-                    // console.log(formula_func)
-                    // '$$${formula_func}$$'
-                func_div.innerHTML = 'Функція що апроксимується:' +'$$' + res[0].formula_func + '$$'
-                    // fun = document.getElementById('func_formula')
+
+                func_div.innerHTML = 'Функція що апроксимується:' + '$$' + res[0].formula_func + '$$'
                 MathJax.Hub.Queue(["Typeset", MathJax.Hub, func_div])
                 let formulas = res.map((iter, i) => {
                     return `
                     	<h3>Ланка №${i+1}</h2>
                     	<h4>a = ${iter.start}  b =${iter.end}</h4>
                     	<h4 id="formula${i}">$$${iter.formula}$$</h4>
-
                     `
                 })
                 iterations.innerHTML = formulas.join('')
                 MathJax.Hub.Queue(["Typeset", MathJax.Hub, iterations])
-
 
                 Plotly.newPlot('plot', [{
                     x: res[0].func_x,
@@ -191,15 +184,7 @@
                     }
                 });
             })
-
-
-        // fetch("http://localhost:5000")
-        // .then(res => res.text())
-        // .then(res => console.log("Server response: ", res))
-
     })
-
-    // after_point= document.getElementById('after_point')
     </script>
 </body>
 
